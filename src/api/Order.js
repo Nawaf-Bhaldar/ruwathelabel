@@ -46,8 +46,33 @@ export async function PlaceOrderGuest(formData, items) {
 }
 
 export async function apiGetOrderDetailById(orderId) {
-  const res = await fetch(
-    API_BASE_URL + `Order/GetOrderDetailById?orderId=${orderId}`
-  );
-  return await res.json();
+  try {
+    const res = await fetch(
+      API_BASE_URL + `Order/GetOrderDetail?OrderId=${orderId}`
+    );
+    if (!res.ok) {
+      console.error(`Order API error: ${res.status} ${res.statusText}`);
+      return { status: false, data: null, error: `HTTP ${res.status}: ${res.statusText}` };
+    }
+    return await res.json();
+  } catch (err) {
+    console.error("❌ apiGetOrderDetailById Error:", err);
+    return { status: false, message: "Network error", error: err instanceof Error ? err.message : String(err) };
+  }
+}
+
+export async function GetOrderByInvoiceId(invoiceId) {
+  try {
+    const res = await fetch(
+      `${API_BASE_URL}Order/GetOrderByInvoiceId?InvoiceId=${encodeURIComponent(invoiceId)}`
+    );
+    if (!res.ok) {
+      console.error(`Order API error: ${res.status} ${res.statusText}`);
+      return { status: false, data: null, error: `HTTP ${res.status}: ${res.statusText}` };
+    }
+    return await res.json();
+  } catch (err) {
+    console.error("❌ GetOrderByInvoiceId Error:", err);
+    return { status: false, message: "Network error", error: err instanceof Error ? err.message : String(err) };
+  }
 }

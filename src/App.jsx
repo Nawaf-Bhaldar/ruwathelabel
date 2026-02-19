@@ -18,11 +18,12 @@ import CartPage from "./components/CartPage";
 import CheckoutPage from "./components/CheckoutPage";
 import PayNowPage from "./components/PayNowPage";
 import OrderConfirmationPage from "./components/OrderConfirmationPage";
+import TrackOrderPage from "./components/TrackOrderPage";
 import { getStockItemIds } from "./utils/variant";
 
 export default function RuwaTheLabel() {
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [page, setPage] = useState("home"); // "home" | "all" | "collection"
+  const [page, setPage] = useState("home"); // "home" | "all" | "collection" | "track-order"
   const [currency] = useState("KWD");
   const [cartItems, setCartItems] = useState([]); // stored but no checkout page yet
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,7 +35,7 @@ export default function RuwaTheLabel() {
   const [loadingCollections, setLoadingCollections] = useState(true);
   const [currentCollectionId, setCurrentCollectionId] = useState(null);
 
-  const heroImg = collections[0]?.img || defaultHero.image;
+  const heroImg = collections[2]?.img || defaultHero.image;
   const newArrivalImg =
     collections && collections.length > 0
       ? collections[1].img
@@ -285,8 +286,15 @@ export default function RuwaTheLabel() {
                 </button>
               ))}
 
-              {/* ⭐ Move "Track my order" here */}
-              <button className="w-full text-left text-neutral-700 hover:text-black uppercase ">
+              {/* Track my order */}
+              <button
+                className="w-full text-left text-neutral-700 hover:text-black uppercase"
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  setSelectedProduct(null);
+                  setPage("track-order");
+                }}
+              >
                 Track my order
               </button>
             </div>
@@ -378,6 +386,8 @@ export default function RuwaTheLabel() {
           <PayNowPage setPage={setPage} />
         ) : page === "orderconfirmation" ? (
           <OrderConfirmationPage setPage={setPage} />
+        ) : page === "track-order" ? (
+          <TrackOrderPage onBack={goHome} />
         ) : (
           <>
             {/* HOME PAGE */}

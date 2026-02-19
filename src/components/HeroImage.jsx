@@ -21,7 +21,7 @@ const HeroImage = ({ image, onShopNow }) => {
         <img
           src={image}
           alt="Hero"
-          className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 ${
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 ${
             imageLoaded ? "opacity-100" : "opacity-0"
           }`}
           onLoad={() => setImageLoaded(true)}
